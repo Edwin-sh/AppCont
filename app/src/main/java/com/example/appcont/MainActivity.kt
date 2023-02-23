@@ -14,20 +14,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val db:FirebaseFirestore = FirebaseFirestore.getInstance()
-
-        /*binding.btnConsultar.setOnClickListener{
-            var data=""
-            db.collection("Cultivos")
-                .get().addOnSuccessListener { res->
-                    for (documento in res){
-                        data += "${documento.id} : ${documento.data} \n"
-                    }
-                    binding.tvNombre.text=data
-                }
-                .addOnFailureListener{ error->
-                    binding.tvNombre.text="error de conexión"
-                }
-        }*/
+        
     }
 }

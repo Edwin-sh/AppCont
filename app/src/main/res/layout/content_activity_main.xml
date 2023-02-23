@@ -38,9 +38,16 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="48dp"
                 android:text="Consultar"
                 android:id="@+id/btnConsultar"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragCOntainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
 
         </LinearLayout>
     </LinearLayout>
