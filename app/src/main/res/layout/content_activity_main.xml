@@ -14,7 +14,7 @@
 
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/mibarra"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
@@ -29,23 +29,13 @@
             android:orientation="vertical"
             android:layout_marginTop="30dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/tvNombre"
-                android:textSize="40sp"
-                android:text="Name"/>
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="Consultar"
-                android:id="@+id/btnConsultar"/>
-
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragCOntainer"
+                android:id="@+id/fragContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/nav_graph"/>
 
 
 
