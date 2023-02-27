@@ -12,12 +12,14 @@
         android:src="@mipmap/ic_launcher_round"/>
 
     <TextView
+        android:id="@+id/tvcombreusu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="usuario PEPITO"
         android:textColor="@color/black"/>
 
     <TextView
+        android:id="@+id/tvcorreo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Coreo.com"

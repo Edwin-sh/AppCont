@@ -19,4 +19,9 @@
         android:id="@+id/Otro"
         android:icon="@android:drawable/ic_menu_send"
         android:title="Otro"/>
+
+    <item
+        android:id="@+id/cerrarsesion"
+        android:icon="@android:drawable/ic_menu_send"
+        android:title="Cierra Sesión"/>
 </menu>

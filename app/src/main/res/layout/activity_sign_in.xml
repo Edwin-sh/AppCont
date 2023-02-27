@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignInActivity">
+    tools:context=".SingIn.InicioSesionActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/title_active_login"
+            android:text="@string/title_activity_login"
             android:textColor="@color/black"
             android:textSize="24sp" />
     </LinearLayout>

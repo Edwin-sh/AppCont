@@ -1,5 +1,6 @@
 package com.example.appcont.fragmentos
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.commit
 import com.example.appcont.R
+import com.example.appcont.SingIn.InicioSesionActivity
 import com.example.appcont.databinding.FragmentInicialCultivosBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,7 +45,7 @@ class InicialCultivosFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_inicial_cultivos, container, false)
         binding = FragmentInicialCultivosBinding.bind(view)
         binding.btnConsultar.setOnClickListener {
-            binding.tvNombre.text = "Presiono"
+
         }
 
         var fragmentManager: FragmentManager = childFragmentManager
