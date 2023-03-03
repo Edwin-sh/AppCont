@@ -35,7 +35,7 @@ class InicioSesionActivity : AppCompatActivity() {
         binding = ActivityInicioSesionBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-        userMagnement= UserMagnement(this)
+        userMagnement= UserMagnement(this, Firebase.auth)
         auth= userMagnement.firebaseAuth!!
         googleSignInClient=userMagnement.googleSignInClient!!
 
@@ -75,7 +75,7 @@ class InicioSesionActivity : AppCompatActivity() {
                 // Google Sign In failed, update UI appropriately
                 Log.w("error", "Google sign in failed", e)
             }
-            userMagnement=UserMagnement(this)
+            userMagnement=UserMagnement(this, Firebase.auth)
             val userActive: UserActive? = userMagnement.obtieneUsuario(this)
             if (userActive!=null){
                 showPantallaInicial()

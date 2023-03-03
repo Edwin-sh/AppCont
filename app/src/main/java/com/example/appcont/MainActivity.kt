@@ -18,6 +18,8 @@ import com.example.appcont.databinding.ActivityMainBinding
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
     lateinit var appBarConfiguration: AppBarConfiguration
@@ -31,8 +33,8 @@ class MainActivity : AppCompatActivity() {
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(findViewById(R.id.mibarra))
-        var userMagnement:UserMagnement=UserMagnement(this)
-        auth = userMagnement.firebaseAuth!!
+        var userMagnement:UserMagnement=UserMagnement(this, Firebase.auth)
+        auth = userMagnement.firebaseAuth
 
         googleSignInClient = userMagnement.googleSignInClient!!
 
