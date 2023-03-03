@@ -1,17 +1,13 @@
 package com.example.appcont.adapter
 
-import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
-import com.example.appcont.Classes.Cultivo
-import com.example.appcont.databinding.FragmentCultivoInitBinding
+import com.example.appcont.model.Cultivo
 
 import com.example.appcont.placeholder.PlaceholderContent.PlaceholderItem
 import com.example.appcont.databinding.FragmentItemCultivoBinding
-import kotlin.coroutines.coroutineContext
 
 /**
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].

@@ -11,7 +11,7 @@
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/recyclerCOntainerCultivosInit"
         android:layout_width="match_parent"
-        android:layout_height="450dp" />
+        android:layout_height="303dp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="50dp"

@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.appcont.Classes.Cultivo
+import com.example.appcont.model.Cultivo
 import com.example.appcont.R
 import com.example.appcont.adapter.MyItemRecyclerViewAdapter
 import com.example.appcont.databinding.FragmentCultivoInitBinding
