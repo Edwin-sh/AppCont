@@ -5,8 +5,8 @@ import lombok.*
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class Cultivo(
-    val idCultivo: String,
-    val nombre: String,
-    val sociedad: Boolean
-)
+class Cultivo() {
+    var idCultivo: String = ""
+    var nombre: String = ""
+    var sociedad: Boolean = false
+}

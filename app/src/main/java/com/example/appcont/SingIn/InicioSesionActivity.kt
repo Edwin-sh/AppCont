@@ -7,41 +7,53 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.appcont.MainActivity
+import com.example.appcont.controller.UserController
 import com.example.appcont.databinding.ActivityInicioSesionBinding
-import com.example.appcont.model.UserActive
+import com.example.appcont.model.User
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import java.io.Serializable
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import java.io.Serializable
 
 
 class InicioSesionActivity : AppCompatActivity() {
     private lateinit var signInRequest: BeginSignInRequest
     private lateinit var binding: ActivityInicioSesionBinding
-    private val REQ_ONE_TAP = 2  // Can be any integer unique to the Activity
     private var showOneTapUI = true
-    private lateinit var auth:FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
-    private lateinit var userMagnement:UserMagnement
+    private lateinit var db: FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityInicioSesionBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
-        userMagnement= UserMagnement(this, Firebase.auth)
-        auth= userMagnement.firebaseAuth!!
-        googleSignInClient=userMagnement.googleSignInClient!!
 
-       if (auth.currentUser != null) {
-            showPantallaInicial()
+        //Inicializacion Firebase auth, db y googleSIngInClient
+        auth = Firebase.auth
+        db = FirebaseFirestore.getInstance()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("27299456498-nvrsaah1d5gpu43c0vk096famff29hqm.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        //Validacion si esta loggeado
+        if (auth.currentUser != null) {
+           showPantallaInicial()
         }
+
         binding.signInAppCompatButton.setOnClickListener() {
             val con = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
             val networkInfo = con.activeNetworkInfo
@@ -57,7 +69,7 @@ class InicioSesionActivity : AppCompatActivity() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
-        //updateUI(currentUser)
+        updateUI(currentUser)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -71,17 +83,10 @@ class InicioSesionActivity : AppCompatActivity() {
                 val account = task.getResult(ApiException::class.java)!!
                 Log.d("succes", "firebaseAuthWithGoogle:" + account.id)
                 firebaseAuthWithGoogle(account.idToken!!)
+
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("error", "Google sign in failed", e)
-            }
-            userMagnement=UserMagnement(this, Firebase.auth)
-            val userActive: UserActive? = userMagnement.obtieneUsuario(this)
-            if (userActive!=null){
-                showPantallaInicial()
-            }else{
-                userMagnement.userActive=UserActive(userMagnement.firebaseUser!!.email!!)
-                showPantallaSignUp()
             }
         }
     }
@@ -91,10 +96,21 @@ class InicioSesionActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d("TAG", "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
+                    //Valida si es nuevo usuario
+                    val isNewUser = task.result?.additionalUserInfo?.isNewUser
+                    val userController = UserController(auth, db, this)
+                    if (isNewUser == true) {
+                        //Si es nuevo le crea la colección
+                        userController.createUser()
+                        showPantallaSignUp()
+                    } else {
+                        val userInfo = userController.getUser()
+                        if (userInfo != null) {
+                            showPantallaInicial()
+                        } else {
+                            showPantallaSignUp()
+                        }
+                    }
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("TAG", "signInWithCredential:failure", task.exception)
@@ -109,22 +125,20 @@ class InicioSesionActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user: FirebaseUser?) {
-        val userActive: UserActive? = userMagnement.obtieneUsuario(this)
-        if (userActive!=null){
-            showPantallaInicial()
-        }else{
-            userMagnement.userActive=UserActive(userMagnement.firebaseUser!!.email!!)
-            showPantallaSignUp()
-        }
+
     }
 
     private fun showPantallaInicial() {
-        startActivity(Intent(this, MainActivity::class.java).putExtra("user",userMagnement as Serializable))
+        startActivity(
+            Intent(this, MainActivity::class.java)
+        )
         finish()
     }
 
     private fun showPantallaSignUp() {
-        startActivity(Intent(this, SingUpActivity::class.java).putExtra("user",userMagnement as Serializable))
+        startActivity(
+            Intent(this, SingUpActivity::class.java)
+        )
         finish()
     }
 }

@@ -17,11 +17,6 @@ android {
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += ["lombok.addLombokGeneratedAnnotation": "true"]
-            }
-        }
     }
 
     buildTypes {
@@ -44,7 +39,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation platform('com.google.firebase:firebase-bom:31.2.2')

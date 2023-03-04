@@ -4,6 +4,7 @@ package com.example.appcont
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
@@ -15,7 +16,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.appcont.SingIn.InicioSesionActivity
 import com.example.appcont.SingIn.UserMagnement
 import com.example.appcont.databinding.ActivityMainBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         var userMagnement:UserMagnement=UserMagnement(this, Firebase.auth)
         auth = userMagnement.firebaseAuth
 
-        googleSignInClient = userMagnement.googleSignInClient!!
+        //googleSignInClient = userMagnement.googleSignInClient!!
 
         val tv=findViewById<TextView>(R.id.tvcorregoogle)
         tv.text=googleSignInClient.toString()
@@ -56,10 +59,13 @@ class MainActivity : AppCompatActivity() {
 
         val vt=findViewById<Button>(R.id.btnCierraSesion)
         vt.setOnClickListener(){
-            auth.signOut()
-            googleSignInClient.signOut()
-            startActivity(Intent(this, InicioSesionActivity::class.java))
-            finish()
+            try {
+                Firebase.auth.signOut()
+                GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut()
+                Log.d("SingUpActivity", "Se cerró sesión")
+            }catch (e:Exception){
+                Log.e("SingUpActivity", "Error cerrando sesión",e)
+            }
         }
     }
 
