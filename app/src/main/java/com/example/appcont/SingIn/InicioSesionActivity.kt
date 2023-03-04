@@ -9,8 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.appcont.MainActivity
 import com.example.appcont.controller.UserController
 import com.example.appcont.databinding.ActivityInicioSesionBinding
-import com.example.appcont.model.User
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -21,13 +19,11 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import java.io.Serializable
 
 
+@Suppress("DEPRECATION")
 class InicioSesionActivity : AppCompatActivity() {
-    private lateinit var signInRequest: BeginSignInRequest
     private lateinit var binding: ActivityInicioSesionBinding
-    private var showOneTapUI = true
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var db: FirebaseFirestore
@@ -42,17 +38,21 @@ class InicioSesionActivity : AppCompatActivity() {
         auth = Firebase.auth
         db = FirebaseFirestore.getInstance()
 
+        //Validacion si esta loggeado
+        if (auth.currentUser != null) {
+            if (UserController(auth, db, this).getUser()!=null){
+                showPantallaInicial()
+            }else{
+                GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut()
+
+            }
+        }
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("27299456498-nvrsaah1d5gpu43c0vk096famff29hqm.apps.googleusercontent.com")
             .requestEmail()
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        //Validacion si esta loggeado
-        if (auth.currentUser != null) {
-           showPantallaInicial()
-        }
 
         binding.signInAppCompatButton.setOnClickListener() {
             val con = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -72,6 +72,7 @@ class InicioSesionActivity : AppCompatActivity() {
         updateUI(currentUser)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
